@@ -1,13 +1,16 @@
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
-import { router } from './helpers';
+import { createApp } from 'vue';
+import { createPinia } from 'pinia';
 
-import App from './App.vue'
+import App from './App.vue';
+import { router } from '@/helpers/routers.js';
 
-createApp(App).mount('#app')
+// setup fake backend
+// import { fakeBackend } from './helpers';
+//fakeBackend();
 
-app.config.errorHandler = (err) => {
-    /* handle error */
-}
+const app = createApp(App);
 
-app.use(createPinia())
+app.use(createPinia());
+app.use(router);
+
+app.mount('#app');

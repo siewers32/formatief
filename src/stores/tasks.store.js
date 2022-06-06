@@ -5,30 +5,25 @@ import { router } from '@/helpers/routers.js';
 
 const baseUrl = `${import.meta.env.VITE_API_URL}`;
 
-export const useAuthStore = defineStore({
-    id: 'auth',
+export const useTasksStore = defineStore({
+    id: 'tasks',
     state: () => ({
         // initialize state from local storage to enable user to stay logged in
-        user: JSON.parse(localStorage.getItem('user')),
+        tasks: JSON.parse(localStorage.getItem('tasks')),
         returnUrl: null
     }),
     actions: {
-        async login(email, password) {
-            const user = await fetchWrapper.post(`${baseUrl}/login`, { email, password });
+        async getTasks() {
+            const tasks = await fetchWrapper.get(`${baseUrl}/tasks`);
 
             // update pinia state
-            this.user = user;
+            this.tasks = tasks;
 
             // store user details and jwt in local storage to keep user logged in between page refreshes
-            localStorage.setItem('user', JSON.stringify(user));
+            localStorage.setItem('tasks', JSON.stringify(tasks));
 
             // redirect to previous url or default to home page
-            router.push(this.returnUrl || '/');
-        },
-        logout() {
-            this.user = null;
-            localStorage.removeItem('user');
-            router.push('/login');
+            router.push(this.returnUrl || '/home');
         }
     }
 });
