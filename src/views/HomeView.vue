@@ -1,11 +1,14 @@
 <script setup>
+import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/auth.store.js';
 import { useTasksStore } from '@/stores/tasks.store.js';
 const tasksStore = useTasksStore();
+const { tasks } = storeToRefs(tasksStore);
 const authStore = useAuthStore();
-const tasks = tasksStore.tasks;
-console.log(tasks)
 const authUser = authStore.user.user
+tasksStore.getAll()
+console.log(tasks)
+
 </script>
 
 <template>
@@ -17,6 +20,6 @@ const authUser = authStore.user.user
             <li v-for="task in tasks" :key="task.id">{{task.title}}</li>
         </ul>
         <div v-if="tasks.loading" class="spinner-border spinner-border-sm"></div>
-        <div v-if="tasks.error" class="text-danger">Error loading tasks: {{users.error}}</div>
+        <div v-if="tasks.error" class="text-danger">Error loading tasks: {{tasks.error}}</div>
     </div>
 </template>
